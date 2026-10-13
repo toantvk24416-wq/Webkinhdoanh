@@ -1,0 +1,100 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Dynamic Table</title>
+    <style>
+      body { font-family: "Times New Roman", serif; font-size: 13px; }
+      #khung { width: 290px; border: 1px solid #333; padding: 8px; }
+      #tbl { border-collapse: collapse; width: 100%; margin: 8px 0; }
+      #tbl td { border: 1px solid #999; padding: 1px 3px; }
+    </style>
+  </head>
+  <body>
+
+    <div id="khung">
+      <div id="dongHo"></div>
+      <p id="dongClick" onmousedown="baoChuot(event)">Click chuột vào dòng này. Sẽ xuất hiện thông báo phím bấm của chuột</p>
+
+      <table id="tbl">
+        <tbody id="tbody">
+          <tr><td>Dòng 1 cột 1</td><td>Dòng 1 cột 2</td></tr>
+          <tr><td>Dòng 2 cột 1</td><td>Dòng 2 cột 2</td></tr>
+          <tr><td>Dòng 3 cột 1</td><td>Dòng 3 cột 2</td></tr>
+        </tbody>
+      </table>
+
+      <input type="button" value="Thêm vào" onclick="themDong()">
+      <input type="button" value="Xóa" onclick="xoaDong()">
+      <input type="button" value="Chỉ hiện dòng" onclick="chiHienDong()">
+      <input type="button" value="Chỉ hiện cột" onclick="chiHienCot()">
+      <input type="button" value="Mở trang mới" onclick="moTrang()">
+    </div>
+
+    <script>
+    function hienGio() {
+      var d = new Date();
+      var h = d.getHours(), m = d.getMinutes(), s = d.getSeconds();
+      document.getElementById("dongHo").innerHTML =
+        (h < 10 ? "0" + h : h) + ":" + (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
+    }
+    hienGio();
+    setInterval(hienGio, 1000);
+
+    function baoChuot(e) {
+      if (e.button == 0) alert("Bạn đã click chuột trái");
+      else if (e.button == 2) alert("Bạn đã click chuột phải");
+    }
+
+    document.getElementById("dongClick").oncontextmenu = function () { return false; };
+
+    function doiNen() {
+      if (this.style.backgroundColor == "red") this.style.backgroundColor = "";
+      else this.style.backgroundColor = "red";
+    }
+    function ganSuKien() {
+      var rows = document.getElementById("tbody").rows;
+      for (var i = 0; i < rows.length; i++) rows[i].onclick = doiNen;
+    }
+    ganSuKien();
+
+    function themDong() {
+      var tr = document.getElementById("tbody").insertRow(0);
+      tr.insertCell(0).innerHTML = "Thêm dòng mới ở đây";
+      tr.insertCell(1).innerHTML = "Thêm dòng mới ở đây";
+      tr.onclick = doiNen;
+    }
+
+    function xoaDong() {
+      var tbody = document.getElementById("tbody");
+      for (var i = tbody.rows.length - 1; i >= 0; i--) {
+        if (tbody.rows[i].style.backgroundColor == "red") tbody.deleteRow(i);
+      }
+    }
+
+    function chiHienDong() {
+      var rows = document.getElementById("tbody").rows;
+      var n = prompt("Nhập số thứ tự dòng cần hiện (bỏ trống để hiện tất cả):", "1");
+      if (n === null) return;
+      for (var i = 0; i < rows.length; i++) {
+        rows[i].style.display = (n == "" || i == n - 1) ? "" : "none";
+      }
+    }
+
+    function chiHienCot() {
+      var rows = document.getElementById("tbody").rows;
+      var n = prompt("Nhập số thứ tự cột cần hiện (bỏ trống để hiện tất cả):", "1");
+      if (n === null) return;
+      for (var i = 0; i < rows.length; i++) {
+        for (var j = 0; j < rows[i].cells.length; j++) {
+          rows[i].cells[j].style.display = (n == "" || j == n - 1) ? "" : "none";
+        }
+      }
+    }
+
+    function moTrang() {
+      window.open("https://tranduythanh.com");
+    }
+    </script>
+
+  </body>
+</html>
