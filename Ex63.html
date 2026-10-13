@@ -1,0 +1,180 @@
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8">
+    <title>Đăng ký thành viên</title>
+    <style>
+      body { font-family: "Times New Roman", serif; font-size: 13px; }
+      h1 { border-bottom: 1px solid #999; padding-bottom: 8px; }
+      #tblDS { border-collapse: collapse; width: 100%; margin-top: 10px; }
+      #tblDS th, #tblDS td { border: 1px solid #000; padding: 2px 4px; }
+      #tblDS th { background: blue; color: white; text-align: left; }
+    </style>
+  </head>
+  <body>
+    <h1>Đăng ký thành viên</h1>
+
+    <form id="frm">
+      <table cellspacing="4">
+        <tr>
+          <td>Tên(*)</td>
+          <td colspan="3"><input type="text" id="txtTen" size="25"></td>
+        </tr>
+        <tr>
+          <td>Ngày sinh(*)</td>
+          <td colspan="3">
+            Ngày: <select id="cboNgay"></select>
+            Tháng: <select id="cboThang"></select>
+            Năm: <select id="cboNam"></select>
+          </td>
+        </tr>
+        <tr>
+          <td>Giới tính(*)</td>
+          <td colspan="3">
+            <input type="radio" name="gt" value="Nam" checked> Nam
+            <input type="radio" name="gt" value="Nữ"> Nữ
+          </td>
+        </tr>
+        <tr>
+          <td>Email(*)</td>
+          <td colspan="3"><input type="text" id="txtEmail" size="25"></td>
+        </tr>
+        <tr><td colspan="4">&nbsp;</td></tr>
+        <tr>
+          <td colspan="4">Sở thích của bạn:<br>
+            <input type="checkbox" name="sothich" value="Mua sắm" checked> Mua sắm<br>
+            <input type="checkbox" name="sothich" value="Du lịch" checked> Du lịch<br>
+            <input type="checkbox" name="sothich" value="Tán gẫu" checked> Tán gẫu<br>
+            <input type="checkbox" name="sothich" value="Đọc sách" checked> Đọc sách<br>
+            <input type="checkbox" name="sothich" value="Nghe nhạc" checked> Nghe nhạc
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4">Màu yêu thích của bạn:<br>
+            <input type="radio" name="mau" value="Màu xanh da trời" checked>
+              <span style="background:blue;color:white;">Màu xanh da trời</span><br>
+            <input type="radio" name="mau" value="Màu đỏ">
+              <span style="background:red;">Màu đỏ</span><br>
+            <input type="radio" name="mau" value="Màu vàng">
+              <span style="background:yellow;">Màu vàng</span><br>
+            <input type="radio" name="mau" value="Màu xanh lá cây">
+              <span style="background:green;">Màu xanh lá cây</span><br>
+            <input type="radio" name="mau" value="Màu xanh tím">
+              <span style="background:violet;">Màu xanh tím</span>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4">
+            <input type="button" value="Đăng ký" onclick="dangKy()">
+            <input type="button" value="Tiếp" onclick="tiep()">
+          </td>
+        </tr>
+      </table>
+    </form>
+
+    <table id="tblDS">
+      <thead>
+        <tr>
+          <th>Tên</th><th>Email</th><th>Giới tính</th><th>Năm sinh</th><th>Sở thích</th><th>Màu yêu thích</th>
+        </tr>
+      </thead>
+      <tbody id="tbody">
+        <tr>
+          <td>Nguyễn Văn Bình</td><td>binh@gmail.com</td><td>Nam</td><td>02/02/1990</td><td>đọc sách</td><td>Màu vàng</td>
+        </tr>
+        <tr>
+          <td>Nguyễn Thị An</td><td>nguyenthian@gmail.com</td><td>Nữ</td><td>01/01/1992</td><td>Tán gẫu, Đọc sách</td><td>Màu đỏ</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <script>
+    function napBirth() {
+      var cboNgay = document.getElementById("cboNgay");
+      var cboThang = document.getElementById("cboThang");
+      var cboNam = document.getElementById("cboNam");
+
+      for (var i = 1; i <= 31; i++) {
+        cboNgay.options[cboNgay.options.length] = new Option(i < 10 ? "0" + i : i, i);
+      }
+      for (var j = 1; j <= 12; j++) {
+        cboThang.options[cboThang.options.length] = new Option(j, j);
+      }
+      for (var k = 1970; k <= 2010; k++) {
+        cboNam.options[cboNam.options.length] = new Option(k, k);
+      }
+    }
+
+    function dangKy() {
+      var ten = document.getElementById("txtTen").value;
+      var email = document.getElementById("txtEmail").value;
+
+      if (ten.replace(/\s/g, "") == "") {
+        alert("Tên không được bỏ trống!");
+        document.getElementById("txtTen").focus();
+        return;
+      }
+
+      var mau = /^[\w.\-]+@[\w\-]+(\.[\w\-]+)+$/;
+      if (!mau.test(email)) {
+        alert("Email không hợp lệ!");
+        document.getElementById("txtEmail").focus();
+        return;
+      }
+
+      var ngay = document.getElementById("cboNgay").value;
+      var thang = document.getElementById("cboThang").value;
+      var nam = document.getElementById("cboNam").value;
+      var ngaySinh = (ngay < 10 ? "0" + ngay : ngay) + "/" + (thang < 10 ? "0" + thang : thang) + "/" + nam;
+
+      var gioiTinh = "";
+      var gt = document.getElementsByName("gt");
+      for (var i = 0; i < gt.length; i++) {
+        if (gt[i].checked) gioiTinh = gt[i].value;
+      }
+
+      var sothich = "";
+      var st = document.getElementsByName("sothich");
+      for (var j = 0; j < st.length; j++) {
+        if (st[j].checked) {
+          sothich += (sothich == "" ? "" : ", ") + st[j].value;
+        }
+      }
+
+      var mauYT = "";
+      var m = document.getElementsByName("mau");
+      for (var k = 0; k < m.length; k++) {
+        if (m[k].checked) mauYT = m[k].value;
+      }
+
+      var tbody = document.getElementById("tbody");
+      var tr = tbody.insertRow(tbody.rows.length);
+      var giaTri = [ten, email, gioiTinh, ngaySinh, sothich, mauYT];
+      for (var c = 0; c < giaTri.length; c++) {
+        tr.insertCell(c).innerHTML = giaTri[c];
+      }
+      ganSuKienDong(tr);
+    }
+
+    function tiep() {
+      document.getElementById("frm").reset();
+      document.getElementById("txtTen").value = "";
+      document.getElementById("txtEmail").value = "";
+      document.getElementById("txtTen").focus();
+    }
+
+    function ganSuKienDong(tr) {
+      tr.onmouseover = function () { this.style.backgroundColor = "yellow"; };
+      tr.onmouseout = function () { this.style.backgroundColor = "white"; };
+    }
+
+    window.onload = function () {
+      napCombo();
+      var rows = document.getElementById("tbody").rows;
+      for (var i = 0; i < rows.length; i++) {
+        ganSuKienDong(rows[i]);
+      }
+    };
+    </script>
+
+  </body>
+</html>
